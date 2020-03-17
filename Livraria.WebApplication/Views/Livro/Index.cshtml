@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Livraria.WebApplication.Models.LivroViewModel>
+
+@{
+    ViewData["Title"] = "Livros";
+}
+
+<div class="title">Livros</div>
+<p>
+    <a asp-action="NovoLivro" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Adicionar Livro</a>
+</p>
+<table id="tabela" class="table table-striped">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Autor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantidade)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Genero)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink("", "Editar", new { id = item.Id }, new { @class = "btn btn-outline-primary btn-sm fa fa-pencil", @title = "Editar" })
+                    @Html.ActionLink("", "Detalhes", new { id = item.Id }, new { @class = "btn btn-outline-secondary btn-sm fa fa-book", @title = "Detalhes" })
+                    @Html.ActionLink("", "Excluir", new { id = item.Id }, new { @class = "btn btn-outline-danger btn-sm fa fa-minus", @title = "Excluir" })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Autor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantidade)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Genero.Descricao)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

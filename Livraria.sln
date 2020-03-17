@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.902
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Livraria.Api", "Livraria.Api\Livraria.Api.csproj", "{D5AB8626-BA0B-4AA4-95B4-BC3D04EDE319}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Livraria.WebApplication", "Livraria.WebApplication\Livraria.WebApplication.csproj", "{3469C3BF-509F-4A83-B099-FDB67F3554AB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D5AB8626-BA0B-4AA4-95B4-BC3D04EDE319}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5AB8626-BA0B-4AA4-95B4-BC3D04EDE319}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5AB8626-BA0B-4AA4-95B4-BC3D04EDE319}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5AB8626-BA0B-4AA4-95B4-BC3D04EDE319}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3469C3BF-509F-4A83-B099-FDB67F3554AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3469C3BF-509F-4A83-B099-FDB67F3554AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3469C3BF-509F-4A83-B099-FDB67F3554AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3469C3BF-509F-4A83-B099-FDB67F3554AB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DBDCCE83-3D66-4EC8-881B-5D71D99608C5}
+	EndGlobalSection
+EndGlobal

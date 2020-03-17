@@ -1,0 +1,34 @@
+﻿@model IEnumerable<Livraria.WebApplication.Models.GeneroViewModel>
+
+@{
+    ViewData["Title"] = "Gêneros Literários";
+}
+
+<div class="title">Gêneros Literários</div>
+<p>
+    <a asp-action="NovoGenero" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Adicionar Gênero</a>
+</p>
+<table id="tabela" class="table table-striped">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descricao)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.ActionLink("", "Editar", new { id = item.Id }, new { @class = "btn btn-outline-primary btn-sm fa fa-pencil", @title = "Editar" })
+                @Html.ActionLink("", "Detalhes", new { id = item.Id }, new { @class = "btn btn-outline-secondary btn-sm fa fa-book", @title = "Detalhes" })
+                @Html.ActionLink("", "Excluir", new { id = item.Id }, new { @class = "btn btn-outline-danger btn-sm fa fa-minus", @title = "Excluir" })
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descricao)
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
