@@ -1,7 +1,6 @@
-﻿using Livraria.Api.Data;
-using Livraria.Api.Models;
+﻿using Livraria.Api.Models;
+using Livraria.Api.Repository;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -11,24 +10,25 @@ namespace Livraria.Api.Controllers
     [ApiController]
     public class LivroController : ControllerBase
     {
-        private readonly LivrariaContext _contexto;
+        private const string MENSAGEM_INFORMACOES_INVALIDAS = "Informações inválidas";
+        private const string PARAMETRO_ID = "{id}";
+        private readonly ILivroRepositorio _repositorio;
 
-        public LivroController(LivrariaContext contexto)
+        public LivroController(ILivroRepositorio repositorio)
         {
-            _contexto = contexto;
+            _repositorio = repositorio;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Livro>>> Get()
         {
-            return await _contexto.Livros.Include(prop => prop.Genero).ToListAsync();
+            return await _repositorio.ObterLivros();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet(PARAMETRO_ID)]
         public async Task<ActionResult<Livro>> Get(int id)
         {
-            var livro = await _contexto.Livros.Include(prop => prop.Genero)
-                                              .FirstOrDefaultAsync(prop  => prop.Id == id);
+            var livro = await _repositorio.ObterLivroPorId(id);
 
             if (livro == null)
                 return NotFound();
@@ -40,46 +40,28 @@ namespace Livraria.Api.Controllers
         public async Task<IActionResult> Post(Livro livro)
         {
             if (!ModelState.IsValid)
-                return BadRequest("Informações inválidas");
+                return BadRequest(MENSAGEM_INFORMACOES_INVALIDAS);
 
-            _contexto.Livros.Add(livro);
-            await _contexto.SaveChangesAsync();
+            await _repositorio.SalvarLivro(livro);
 
             return Ok();
         }
 
-        [HttpPut("{id}")]
+        [HttpPut(PARAMETRO_ID)]
         public async Task<IActionResult> Editar(int id, Livro livroEditado)
         {
             if (!ModelState.IsValid)
-                return BadRequest("Informações inválidas");
+                return BadRequest(MENSAGEM_INFORMACOES_INVALIDAS);
 
-            var livro = await _contexto.Livros.FirstOrDefaultAsync(prop => prop.Id == id);
-
-            if (livro == null)
-                return NotFound();
-
-            livro.Autor = livroEditado.Autor;
-            livro.Nome = livroEditado.Nome;
-            livro.Quantidade = livroEditado.Quantidade;
-            livro.GeneroId = livroEditado.GeneroId;
-
-            await _contexto.SaveChangesAsync();
+            await _repositorio.AlterarLivro(id, livroEditado);
 
             return Ok();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete(PARAMETRO_ID)]
         public async Task<IActionResult> ExcluirLivro(int id)
         {
-            var livro = await _contexto.Livros.FindAsync(id);
-
-            if(livro == null)
-                return NotFound();
-
-            _contexto.Livros.Remove(livro);
-            await _contexto.SaveChangesAsync();
-
+            await _repositorio.ExcluirLivro(id);
             return NoContent();
         }
     }

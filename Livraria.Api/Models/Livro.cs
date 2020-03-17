@@ -19,6 +19,7 @@ namespace Livraria.Api.Models
 
         [Required]
         public int GeneroId { get; set; }
+
         public Genero Genero { get; set; }
     }
 }

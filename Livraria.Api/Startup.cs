@@ -1,4 +1,5 @@
 ﻿using Livraria.Api.Data;
+using Livraria.Api.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -16,18 +17,20 @@ namespace Livraria.Api
         }
 
         public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+        
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddTransient<ILivroRepositorio, LivroRepositorio>();
+            services.AddTransient<IGeneroRepositorio, GeneroRepositorio>();
+
             services.AddDbContext<LivrariaContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("LivrariaContext"));
             });
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())

@@ -1,7 +1,6 @@
-﻿using Livraria.Api.Data;
-using Livraria.Api.Models;
+﻿using Livraria.Api.Models;
+using Livraria.Api.Repository;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -11,23 +10,25 @@ namespace Livraria.Api.Controllers
     [ApiController]
     public class GeneroController : ControllerBase
     {
-        private readonly LivrariaContext _contexto;
+        private const string MENSAGEM_INFORMACOES_INVALIDAS = "Informações inválidas";
+        private const string PARAMETRO_ID = "{id}";
+        private readonly IGeneroRepositorio _repositorio;
 
-        public GeneroController(LivrariaContext contexto)
+        public GeneroController(IGeneroRepositorio repositorio)
         {
-            _contexto = contexto;
+            _repositorio = repositorio;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Genero>>> Get()
         {
-            return await _contexto.Generos.ToListAsync();
+            return await _repositorio.ObterGeneros();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet(PARAMETRO_ID)]
         public async Task<ActionResult<Genero>> Get(int id)
         {
-            var genero = await _contexto.Generos.FirstOrDefaultAsync(prop  => prop.Id == id);
+            var genero = await _repositorio.ObterGeneroPorId(id);
 
             if (genero == null)
                 return NotFound();
@@ -39,43 +40,28 @@ namespace Livraria.Api.Controllers
         public async Task<IActionResult> Post(Genero genero)
         {
             if (!ModelState.IsValid)
-                return BadRequest("Informações inválidas");
+                return BadRequest(MENSAGEM_INFORMACOES_INVALIDAS);
 
-            _contexto.Generos.Add(genero);
-            await _contexto.SaveChangesAsync();
+            await _repositorio.SalvarGenero(genero);
 
             return Ok();
         }
 
-        [HttpPut("{id}")]
+        [HttpPut(PARAMETRO_ID)]
         public async Task<IActionResult> Editar(int id, Genero generoEditado)
         {
             if (!ModelState.IsValid)
-                return BadRequest("Informações inválidas");
+                return BadRequest(MENSAGEM_INFORMACOES_INVALIDAS);
 
-            var genero = await _contexto.Generos.FirstOrDefaultAsync(prop => prop.Id == id);
-
-            if (genero == null)
-                return NotFound();
-
-            genero.Descricao = generoEditado.Descricao;         
-
-            await _contexto.SaveChangesAsync();
+            await _repositorio.AlterarGenero(id, generoEditado);
 
             return Ok();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete(PARAMETRO_ID)]
         public async Task<IActionResult> ExcluirGenero(int id)
         {
-            var genero = await _contexto.Generos.FindAsync(id);
-
-            if(genero == null)
-                return NotFound();
-
-            _contexto.Generos.Remove(genero);
-            await _contexto.SaveChangesAsync();
-
+            await _repositorio.ExcluirGenero(id);
             return NoContent();
         }
     }
